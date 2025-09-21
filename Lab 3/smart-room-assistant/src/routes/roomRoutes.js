@@ -1,7 +1,25 @@
 const express = require("express");
 const router = express.Router();
-
+const axios = require('axios');
+const utilities = require('../helpers/utilities');
 const db = require('../db');
+
+// GET request to retrieve average temperature of all rooms
+router.get('/rooms/dashboard', async (req, res) => {
+    try {
+        // get existing rooms
+        console.log(`Getting rooms http://localhost:${utilities.port}/api/rooms`)
+        const response = await axios.get(`http://localhost:${utilities.port}/api/rooms`);
+
+        res.render(
+            'dashboard',
+            { rooms: response.data }
+        );
+    } catch (err) {
+        console.log("Error while rending page." + err);
+        return res.status(500).json({ 'error': 'could not complete request to render page' });
+    };
+});
 
 // GET request to retrieve average temperature of all rooms
 router.get('/rooms/average-temperature', async (req, res) => {

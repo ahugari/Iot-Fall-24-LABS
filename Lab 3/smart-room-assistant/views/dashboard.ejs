@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <style>
+    /* Basic CSS styling for the dashboard */
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+
+  <h2>Rooms</h2>
+  <% if (rooms && rooms.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Light</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rooms.forEach(room => { %>
+        <% const lightStatusName = room.light ? "On" : "Off" %>
+        <% const lightNextStatusName = room.light ? "Off" : "On" %>
+          <tr>
+            <td><%= room.id %></td>
+            <td><%= room.name %></td>
+            <td><%= lightStatusName %></td>
+            <td>
+              <a href="/api/rooms/<%= room.id %>/light" onclick="toggleLight(event, '<%= room.id %>', '<%= lightNextStatusName %>')">Toggle Light</a>
+              <a href="/rooms/delete/<%= room.id %>">Delete</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No rooms found.</p>
+  <% } %>
+
+  <hr>
+
+  <h2>Settings</h2>
+  <form action="/settings/update" method="post">
+    <label for="setting1">Setting 1:</label>
+    <input type="text" id="setting1" name="setting1" value="settings dumy data">
+    <br>
+    <button type="submit">Update Settings</button>
+  </form>
+
+  <!-- Add more sections for other data and controls -->
+</body>
+<script>
+    function toggleLight(event, roomId, lightStatus) {
+        event.preventDefault();
+
+        const url = `/api/rooms/${roomId}/light`;
+        const body = {
+            light: lightStatus
+        };
+        
+        fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        })
+        .then(response => {
+            if(!response.ok) {
+                throw new Error(`HTTP error encountered: ${response.status}`)
+            }
+
+            return response.json();
+        })
+        .then(response)
+        .catch(error => {
+            console.error("Error occured while toggling light", error);
+        });
+    }
+</script>
+</html>

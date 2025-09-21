@@ -75,7 +75,8 @@ const pool = require('./db');
 const app = express();
 const roomRoutes = require('./routes/roomRoutes');
 const { startLogging } = require('./plugins/sensorPlugins');
-
+const path = require('path');
+const utilities = require('./helpers/utilities');
 
 async function initApp() {
     const result = await pool.query(`SELECT datname from pg_catalog.pg_database WHERE datname =$1`, [process.env.DATABASE]);
@@ -122,9 +123,12 @@ async function initApp() {
 initApp();
 startLogging();
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '..', 'views'));
+
 app.use(express.json());
 app.use('/api', roomRoutes);
 
-const port = process.env.PORT || 5000;
+const port = utilities.port;
 
 app.listen(port, () => console.log(`Smart Room service started on port ${port}`));
