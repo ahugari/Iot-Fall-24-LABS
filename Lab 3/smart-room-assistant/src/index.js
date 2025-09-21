@@ -129,6 +129,12 @@ app.set('views', path.join(__dirname, '..', 'views'));
 app.use(express.json());
 app.use('/api', roomRoutes);
 
+app.get('/react', (req, res) => {
+    res.render('reactMount', {});
+});
+app.use(express.static(path.join(__dirname, '..', 'react/react_module/dist')));
+app.use('/assets', express.static(path.join(__dirname, '../react/react_module/dist/assets')));
+
 const port = utilities.port;
 
 app.listen(port, () => console.log(`Smart Room service started on port ${port}`));

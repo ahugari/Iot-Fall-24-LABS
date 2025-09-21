@@ -12,7 +12,7 @@ router.get('/rooms/dashboard', async (req, res) => {
         const response = await axios.get(`http://localhost:${utilities.port}/api/rooms`);
 
         res.render(
-            'dashboard',
+            'reactMount',
             { rooms: response.data }
         );
     } catch (err) {
