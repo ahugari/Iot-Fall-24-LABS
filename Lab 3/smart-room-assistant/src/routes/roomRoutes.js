@@ -225,7 +225,7 @@ async function getAverageTemperature() {
 }
 
 async function getAllRoomsTemperatureLogs() {
-    const result = await db.query('SELECT A.temperature, A.timestamp, B.name FROM temperature_logs as A inner join rooms as B on A.room_id = B.id;');
+    const result = await db.query('SELECT A.temperature, A.timestamp, B.name, A.room_id FROM temperature_logs as A inner join rooms as B on A.room_id = B.id order by A.timestamp desc;');
     return result.rows;
 }
 
