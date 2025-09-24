@@ -61,39 +61,66 @@ function RoomsTable() {
     }
   };
 
+  const toggleAllLights = async (lightStatus) => {
+    try {
+      const url = `/api/rooms/lights/${lightStatus}`;
+
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error encountered: ${response.status}`);
+      }
+
+      fetchRooms();
+    } catch (error) {
+      console.error(`Error turnings lights ${lightStatus}: `, error);
+    }
+  };
+
   if (loading) {
     return <p>loading...</p>;
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {rooms.map((room) => {
-          const lightStatusName = room.light ? "On" : "Off";
-          const lightNextStatusName = room.light ? "Off" : "On";
-          return (
-            <tr key={room.id}>
-              <td>{room.name}</td>
-              <td>{lightStatusName}</td>
-              <td>
-                <button
-                  onClick={() => toggleLight(room.id, lightNextStatusName)}
-                >
-                  Toggle Light
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rooms.map((room) => {
+            const lightStatusName = room.light ? "On" : "Off";
+            const lightNextStatusName = room.light ? "Off" : "On";
+            return (
+              <tr key={room.id}>
+                <td>{room.name}</td>
+                <td>{lightStatusName}</td>
+                <td>
+                  <button
+                    onClick={() => toggleLight(room.id, lightNextStatusName)}
+                  >
+                    Toggle Light
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <button onClick={() => toggleAllLights("off")}>
+        Turn off all lights
+      </button>
+      <button onClick={() => toggleAllLights("on")}>Turn on all lights</button>
+    </div>
   );
 }
 
