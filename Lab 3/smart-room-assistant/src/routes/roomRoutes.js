@@ -34,6 +34,19 @@ router.get('/rooms/average-temperature', async (req, res) => {
     };
 });
 
+// GET request to retrieve temperature of all rooms
+router.get('/rooms/temperature_logs', async (req, res) => {
+    try {
+
+        const temp_logs = await getAllRoomsTemperatureLogs();
+
+        res.status(200).send(temp_logs);
+    } catch (err) {
+        console.log("Error while getting temperature of all rooms. Verify database configuration and try again." + err);
+        return res.status(500).json({ 'error': 'could not complete request to get temperature of all rooms' });
+    };
+});
+
 // GET request to retrieve all rooms
 router.get('/rooms', async (req, res) => {
     try {
@@ -209,6 +222,11 @@ async function deleteRoom(id) {
 async function getAverageTemperature() {
     const result = await db.query('SELECT AVG(temperature) AS average_temperature FROM temperature_logs;');
     return result.rows[0];
+}
+
+async function getAllRoomsTemperatureLogs() {
+    const result = await db.query('SELECT A.temperature, A.timestamp, B.name FROM temperature_logs as A inner join rooms as B on A.room_id = B.id;');
+    return result.rows;
 }
 
 async function turnAllRoomLightsOn() {
