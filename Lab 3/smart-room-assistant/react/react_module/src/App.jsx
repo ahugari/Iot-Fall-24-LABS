@@ -32,6 +32,7 @@ function App() {
 
         console.log("new rooms", newRooms);
         setRooms(newRooms);
+        // roomsRef.current = newRooms;
       } catch (error) {
         console.log("Error while fetching temperature logs", error);
       }
@@ -74,6 +75,7 @@ function App() {
       }
 
       const data = await response.json();
+
       setRooms(data);
       roomsRef.current = data;
     } catch (error) {
@@ -142,6 +144,7 @@ function App() {
 
       const data = await roomsResponse.json();
       setRooms(data);
+      roomsRef.current = data;
     } catch (error) {
       console.error(`Error turnings lights ${lightStatus}: `, error);
     }
