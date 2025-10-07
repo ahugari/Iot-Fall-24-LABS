@@ -8,7 +8,12 @@ const RD1_RED_PIN = 517; // Road Red Light pin - GPIO 5
 const RD1_YELLOW_PIN = 518; // Road Yellow Light pin - GPIO 6
 const RD1_GREEN_PIN = 538; // Road Green Light pin - GPIO 26
 
-const SWITCH_INTERVAL = 300; // Delay time in milliseconds
+const RD2_RED_PIN = 535; // Road Red Light pin - GPIO 23
+const RD2_YELLOW_PIN = 536; // Road Yellow Light pin - GPIO 24
+const RD2_GREEN_PIN = 537; // Road Green Light pin - GPIO 25
+
+
+const SWITCH_INTERVAL = 3000; // Delay time in milliseconds
 
 try {
     // Initial state has Road on green LED and Pedestrian Crossing on red LED
@@ -18,11 +23,18 @@ try {
     console.log(`Pedestrian yellow LED initialized on Gpio ${PDC_YELLOW_PIN}`);
     console.log(`Pedestrian green LED initialized on Gpio ${PDC_GREEN_PIN}`);
 
-    const road_lights = new TrafficLight(RD1_RED_PIN, RD1_YELLOW_PIN, RD1_GREEN_PIN, "green");
+    const road_lights_1 = new TrafficLight(RD1_RED_PIN, RD1_YELLOW_PIN, RD1_GREEN_PIN, "green");
 
-    console.log(`Road red LED initialized on Gpio ${RD1_RED_PIN}`);
-    console.log(`Road yellow LED initialized on Gpio ${RD1_YELLOW_PIN}`);
-    console.log(`Road green LED initialized on Gpio ${RD1_GREEN_PIN}`);
+    console.log(`Road 1 red LED initialized on Gpio ${RD1_RED_PIN}`);
+    console.log(`Road 1 yellow LED initialized on Gpio ${RD1_YELLOW_PIN}`);
+    console.log(`Road 1 green LED initialized on Gpio ${RD1_GREEN_PIN}`);
+
+    const road_lights_2 = new TrafficLight(RD2_RED_PIN, RD2_YELLOW_PIN, RD2_GREEN_PIN, "green");
+
+    console.log(`Road 2 red LED initialized on Gpio ${RD2_RED_PIN}`);
+    console.log(`Road 2 yellow LED initialized on Gpio ${RD2_YELLOW_PIN}`);
+    console.log(`Road 2 green LED initialized on Gpio ${RD2_GREEN_PIN}`);
+
 
     console.log("Starting traffic lights system...");
 
@@ -32,7 +44,8 @@ try {
         pedestrian_crossing_lights.turnNextLEDOn();
 
         console.log("Processing road lights...");
-        road_lights.turnNextLEDOn();
+        road_lights_1.turnNextLEDOn();
+        road_lights_2.turnNextLEDOn();
     }, SWITCH_INTERVAL);
 
     // Clean up
@@ -40,7 +53,8 @@ try {
         console.log("Cleaning up GPIO pins...");
         clearInterval(toggleLEDs);
         pedestrian_crossing_lights.cleanUpLights();
-        road_lights.cleanUpLights();
+        road_lights_1.cleanUpLights();
+        road_lights_2.cleanUpLights();
 
         console.log("Clean up successful. Exiting.");
         process.exit();
