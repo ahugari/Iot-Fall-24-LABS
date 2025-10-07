@@ -1,3 +1,76 @@
+/*
+  traffic-light-system.js - main control program for the Raspberry Pi Traffic Light System
+  =======================================================================================
+
+  This program is for Lab 04-645 A: Internet of Things (IoT) at Carnegie Mellon University Africa.
+
+  Functionality:
+  --------------
+  This Node.js application controls a simple traffic light system using the Raspberry Pi's GPIO pins.
+  It alternates red, yellow (amber), and green LEDs to simulate traffic and pedestrian lights on a one-way road.
+  The lights switch states on a timed cycle, allowing cars and pedestrians to move alternately.
+  
+  The system uses three sets of lights:
+    - Pedestrian Crossing (Red, Yellow, Green)
+    - Road 1 (Red, Yellow, Green)
+    - Road 2 (Red, Yellow, Green)
+
+  GPIO Pin Mapping:
+  -----------------
+  Pedestrian Crossing:
+    - Red: GPIO 17 (Pin 529)
+    - Yellow: GPIO 27 (Pin 539)
+    - Green: GPIO 22 (Pin 534)
+
+  Road 1:
+    - Red: GPIO 5  (Pin 517)
+    - Yellow: GPIO 6 (Pin 518)
+    - Green: GPIO 26 (Pin 538)
+
+  Road 2:
+    - Red: GPIO 23 (Pin 535)
+    - Yellow: GPIO 24 (Pin 536)
+    - Green: GPIO 25 (Pin 537)
+
+  Input:
+  ------
+  - No direct user input during runtime.
+  - LED GPIO pins are toggled programmatically on the Raspberry Pi via pigpio library.
+  - Timing for light cycles is configured in code.
+
+  Output:
+  -------
+  - LEDs connected to the above GPIO pins turn ON and OFF in correct sequence representing traffic and pedestrian signals.
+  - Optional console logs for debugging/status.
+
+  Dependencies:
+  -------------
+  - Node.js runtime environment on Raspberry Pi.
+  - 'pigpio' Node.js package for GPIO control.
+  - Raspberry Pi hardware with LEDs connected to specified GPIO pins.
+
+  Usage:
+  ------
+  1. Ensure Node.js and pigpio library are installed on the Pi.
+  2. Connect LEDs to Raspberry Pi GPIO pins as mapped above using resistors.
+  3. Run with: `node main.js`
+  4. The program cycles the traffic lights indefinitely until stopped using Ctl + C.
+
+  Design Strategy:
+  ----------------
+  Uses interval functions to cycle through light states.
+  The program enforces a traffic light sequence where pedestrian and road lights alternate states with red, yellow, and green phases.
+  Hardware GPIO pin abstractions are defined as constants to ease code readability and maintainability.
+
+  Author:
+  -------
+  Mark Iraguha, Carnegie Mellon University Africa
+  Date: 10/07/2025
+
+  Audit Trail:
+  ------------
+  Initial version created for Lab 04 traffic light system assignment. Updated with precise GPIO pin mappings.
+*/
 const TrafficLight = require('./traffic-light');
 
 const PDC_RED_PIN = 529; // Pedestrian Crossing Red Light pin - GPIO 17
